@@ -39,6 +39,11 @@ public abstract class Tile {
         }
 
         @Override
+        public String toString() {
+            return "-";
+        }
+
+        @Override
         public boolean isTileOccupied() {
             return false;
         }
@@ -58,6 +63,12 @@ public abstract class Tile {
             }
 
             @Override
+            public String toString() {
+                // Black Piece will be shown in LowerCase and White Piece will be shown in UpperCase
+                return getPiece().getPieceAlliance().isBlack() ? getPiece().toString().toLowerCase() : getPiece().toString();
+            }
+
+            @Override
             public boolean isTileOccupied() {
                 return true;
             }
@@ -67,6 +78,5 @@ public abstract class Tile {
                 return this.pieceOnTile;
             }
         }
-
     }
 }
