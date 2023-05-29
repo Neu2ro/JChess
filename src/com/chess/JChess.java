@@ -13,3 +13,5 @@ public class JChess {
         Table table = new Table();
     }
 }
+
+// Commented some lines in the Move Class and BoardUtils class in the board folder

@@ -6,9 +6,10 @@ import com.chess.engine.piece.Rook;
 
 public abstract class Move {
 
-    final Board board;
-    final Piece movedPiece;
-    final int destinationCoordinate;
+    protected final Board board;
+    protected final Piece movedPiece;
+    protected final int destinationCoordinate;
+    protected final boolean isFirstMove;
 
     public static final Move NULL_MOVE = null;
 
@@ -18,6 +19,15 @@ public abstract class Move {
         this.board = board;
         this.movedPiece = movedPiece;
         this.destinationCoordinate = destinationCoordinate;
+        this.isFirstMove = movedPiece.isFirstMove();
+    }
+
+    private Move(final Board board,
+                 final int destinationCoordinate) {
+        this.board = board;
+        this.destinationCoordinate = destinationCoordinate;
+        this.movedPiece = null;
+        this.isFirstMove = false;
     }
 
     @Override
@@ -26,6 +36,7 @@ public abstract class Move {
         int result = 1;
         result = prime * result + this.destinationCoordinate;
         result = prime * result + this.movedPiece.hashCode();
+        result = prime * result + this.movedPiece.getPiecePosition();
         return result;
     }
 
@@ -38,7 +49,8 @@ public abstract class Move {
             return false;
         }
         final Move otherMove = (Move) other;
-        return getDestinationCoordinate() == otherMove.getDestinationCoordinate() &&
+        return getCurrentCoordinate() == otherMove.getCurrentCoordinate() &&
+                getDestinationCoordinate() == otherMove.getDestinationCoordinate() &&
                getMovedPiece().equals(otherMove.getMovedPiece());
     }
 
@@ -70,16 +82,13 @@ public abstract class Move {
     public Board execute() {
         final Board.Builder builder = new Board.Builder();
         for(final Piece piece : this.board.currentPlayer().getActivePieces()) {
-            // TODO hashcode and equals for pieces
             if(!this.movedPiece.equals(piece)) {
                 builder.setPiece(piece);
             }
         }
-
         for(final Piece piece : this.board.currentPlayer().getOpponent().getActivePieces()) {
             builder.setPiece(piece);
         }
-
         // move the moved piece
         builder.setPiece(this.movedPiece.movePiece(this));
         builder.setMoveMaker(this.board.currentPlayer().getOpponent().getAlliance());
@@ -93,6 +102,16 @@ public abstract class Move {
                   final int destinationCoordinate) {
             super(board, movedPiece, destinationCoordinate);
         }
+
+        @Override
+        public boolean equals(final Object other){
+            return this == other || other instanceof MajorMove && super.equals(other);
+        }
+
+//        @Override
+//        public String toString() {
+//            return movedPiece.getPieceType().toString() + BoardUtils.getPositionAtCoordinate(this.destinationCoordinate);
+//        }
     }
 
     public static class AttackMove extends Move {
@@ -104,12 +123,10 @@ public abstract class Move {
             super(board, movedPiece, destinationCoordinate);
             this.attackedPiece = attackedPiece;
         }
-
         @Override
         public int hashCode() {
             return this.attackedPiece.hashCode() + super.hashCode();
         }
-
         @Override
         public boolean equals(final Object other) {
             if(this == other) {
@@ -121,12 +138,10 @@ public abstract class Move {
             final AttackMove otherAttackMove = (AttackMove) other;
             return super.equals(otherAttackMove) && getAttackedPiece().equals(otherAttackMove.getAttackedPiece());
         }
-
         @Override
         public Board execute() {
             return null;
         }
-
         @Override
         public boolean isAttack() {
             return true;
@@ -271,15 +286,15 @@ public abstract class Move {
         }
     }
 
-//    public static final class NullMove extends Move {
-//        public NullMove {
-//            super(null, null, -1);
-//        }
-//        @Override
-//        public Board excute() {
-//            throw new RuntimeException("Cannot execute the null move!");
-//        }
-//    }
+    public static final class NullMove extends Move {
+        public NullMove() {
+            super(null, null, -1);
+        }
+        @Override
+        public Board execute(){
+            throw new RuntimeException("cannot execute the null move");
+        }
+    }
 
     public static class MoveFactory {
 
