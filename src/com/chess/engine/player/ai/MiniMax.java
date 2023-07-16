@@ -47,7 +47,7 @@ public class MiniMax implements MoveStrategy{
         }
         final long executionTime = System.currentTimeMillis() - startTime;
 
-        return null;
+        return bestMove;
     }
 
     private static boolean isEndGameScenario(final Board board) {
@@ -78,7 +78,7 @@ public class MiniMax implements MoveStrategy{
         if(depth == 0 || isEndGameScenario(board)) {
             return this.boardEvaluator.evaluate(board, depth);
         }
-        int highestSeenValue = Integer.MAX_VALUE;
+        int highestSeenValue = Integer.MIN_VALUE;
         for(final Move move : board.currentPlayer().getLegalMoves()) {
             final MoveTransition moveTransition = board.currentPlayer().makeMove(move);
             if(moveTransition.getMoveStatus().isDone()) {
