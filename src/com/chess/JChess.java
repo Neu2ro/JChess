@@ -1,3 +1,6 @@
+/**
+ * The JChess class creates a standard chess board and displays it using a graphical user interface.
+ */
 package com.chess;
 
 import com.chess.engine.board.Board;
@@ -12,5 +15,3 @@ public class JChess {
         Table.get().show();
     }
 }
-
-// Commented some lines in the Move Class and BoardUtils class in the board folder

@@ -50,6 +50,7 @@ public class Table extends Observable {
     private final static Dimension BOARD_PANEL_DIMENSION = new Dimension(400, 350);
     private final static Dimension TILE_PANEL_DIMENSION = new Dimension(10,10);
 
+    private static String iconImagePath = "art/misc/chesslogo.png";
     private static String defaultPieceImagesPath = "art/plain/";
     private final Color lightTileColor = Color.decode("#FFFACD");
     private final Color darkTileColor = Color.decode("#593E1A");
@@ -74,7 +75,10 @@ public class Table extends Observable {
         this.gameFrame.add(this.takenPiecesPanel, BorderLayout.WEST);
         this.gameFrame.add(this.boardPanel, BorderLayout.CENTER);
         this.gameFrame.add(this.gameHistoryPanel, BorderLayout.EAST);
+        ImageIcon imageIcon = new ImageIcon(iconImagePath);
+        this.gameFrame.setIconImage(imageIcon.getImage());
         this.gameFrame.setVisible(true);
+
     }
 
     public static Table get() {
@@ -170,7 +174,7 @@ public class Table extends Observable {
                     !Table.get().getGameBoard().currentPlayer().isInCheckMate() &&
                     !Table.get().getGameBoard().currentPlayer().isInStaleMate()) {
                 // create an AI thread
-                // execute ai work
+                // execute AI work
                 final AIThinkTank thinkTank = new AIThinkTank();
                 thinkTank.execute();
             }
