@@ -76,11 +76,16 @@ public class TakenPiecesPanel extends JPanel {
 
         for(final Piece takenPiece : whiteTakenPieces) {
             try {
-                final BufferedImage image = ImageIO.read(new File("art/plain"
-                        + takenPiece.getPieceAlliance().toString().substring(0, 1) + "" + takenPiece.toString()));
-                final ImageIcon icon = new ImageIcon(image);
-                final JLabel imageLabel = new JLabel();
-                this.southPanel.add(imageLabel);
+                String imagePath = "art/plain/" + takenPiece.getPieceAlliance().toString().substring(0, 1) + takenPiece.toString() + ".gif";
+                System.out.println("Attempting to read image: " + imagePath);
+                final BufferedImage image = ImageIO.read(new File(imagePath));
+                if (image != null) {
+                    final ImageIcon icon = new ImageIcon(image);
+                    final JLabel imageLabel = new JLabel(icon);
+                    this.southPanel.add(imageLabel);
+                } else {
+                    System.err.println("Failed to read image: " + imagePath);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -88,11 +93,16 @@ public class TakenPiecesPanel extends JPanel {
 
         for(final Piece takenPiece : blackTakenPieces) {
             try {
-                final BufferedImage image = ImageIO.read(new File("art/plain"
-                        + takenPiece.getPieceAlliance().toString().substring(0, 1) + "" + takenPiece.toString()));
-                final ImageIcon icon = new ImageIcon(image);
-                final JLabel imageLabel = new JLabel();
-                this.southPanel.add(imageLabel);
+                String imagePath = "art/plain/" + takenPiece.getPieceAlliance().toString().substring(0, 1) + takenPiece.toString() + ".gif";
+                System.out.println("Attempting to read image: " + imagePath);
+                final BufferedImage image = ImageIO.read(new File(imagePath));
+                if (image != null) {
+                    final ImageIcon icon = new ImageIcon(image);
+                    final JLabel imageLabel = new JLabel(icon);
+                    this.southPanel.add(imageLabel);
+                } else {
+                    System.err.println("Failed to read image: " + imagePath);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
