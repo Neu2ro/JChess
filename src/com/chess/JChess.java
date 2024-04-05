@@ -1,8 +1,8 @@
-/**
- * The JChess class creates a standard chess board and displays it using a graphical user interface.
- */
-package com.chess;
+/*
+    The JChess class creates a standard chess board and displays it using a graphical user interface.
+*/
 
+package com.chess;
 import com.chess.engine.board.Board;
 import com.chess.gui.Table;
 
